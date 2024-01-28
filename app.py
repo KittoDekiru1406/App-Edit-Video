@@ -2,15 +2,20 @@ from Tools import *
 
 st.title("Video Edit App")
 video_file = st.file_uploader("Choose video file", type=["mp4", "avi", "mkv"], accept_multiple_files=False)
+steps = 0 # Numbers to edit
+# Save videos
+edit_history = []
 if video_file is not None:
     Video = load_video(video_file)
+    edit_history.append(Video)
     st.video(video_file)
     st.header("Video Speed")
     col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
     def change_video_speed(speed):
-        change_speed(Video, speed)
-        st.success("Video speed has been changed successfully!")
-    
+        new_Video = change_speed(Video, speed)
+        steps += 1
+        edit_history.append(new_Video)
+        # st.success("Video speed has been changed successfully!")    
     button_speed_025 = col1.button("0.25x", on_click=lambda: change_video_speed(0.25))
     button_speed_05 = col2.button("0.5x", on_click=lambda: change_video_speed(0.5))
     button_speed_075 = col3.button("0.75x", on_click=lambda: change_video_speed(0.75))
@@ -22,8 +27,11 @@ if video_file is not None:
     st.header("Video Rotate")
     rotate1, rotate2, rotate3, rotate4, rotate5, rotate6 = st.columns(6)
     def Rotate_video(angle):
-        rotate_video(Video, angle)
-        st.success("Video rotation has been successfully!")
+        global steps, edit_history
+        new_Video = rotate_video(Video, angle)
+        steps += 1
+        edit_history.append(new_Video)
+        # st.success("Video rotation has been successfully!")
     
     button_rotate_45 = rotate1.button("45°", on_click=lambda: Rotate_video(45))
     button_rotate_90 = rotate2.button("90°", on_click=lambda: Rotate_video(90))
@@ -33,12 +41,14 @@ if video_file is not None:
     button_rotate_270 = rotate6.button("270°", on_click=lambda: Rotate_video(270))
 
     st.header("Video Cut")
-    fps, frame_count, duration = get_info_video(Video)
+    duration = get_info_video(Video)
     range_values = st.slider("Drag time to cut(second)", 0, duration, (0, duration), 5)
     def func_cut():
         start_time, end_time = range_values[0], range_values[1]
-        cut_video(Video, start_time, end_time)
-        st.success("Video cut success")
+        new_Video = cut_video(Video, start_time, end_time)
+        steps += 1
+        edit_history.append(new_Video)
+        # st.success("Video cut success")
     button_cut = st.button("Cut", on_click=func_cut)
 
     st.header("Video Merge")
@@ -47,13 +57,33 @@ if video_file is not None:
     if video_merge is not None:
         video_new_merge = load_video(video_merge)
         st.video(video_merge)
+        def Merge_Video():
+            new_Video = merge_video(Video, video_new_merge)
+            steps += 1
+            edit_history.append(new_Video)
+            # st.success("Merge video successfully")
+        button_merge_video = st.button("Merge video", on_click= Merge_Video)
 
 
-    st.header("Undo Edit")
+    st.header("Undo and Redo Edit")
+    def Undo_Edit():
+        global steps
+        steps -= 1
+    def Redo_Edit():
+        global steps
+        steps += 1
+    col1_Undo, col2_Redo = st.columns(2)
+    button_undo_edit = col1_Undo.button("Undo", on_click=Undo_Edit)    
+    button_Redo_edit = col2_Redo.button("Redo", on_click=Redo_Edit)
 
     st.header("Export")
-    def final_func():
-        pass
-    final_button = st.button("Download", on_click=final_func)
-
+    st.write(steps)
+    if st.button("Download"):
+        video_to_download = download_video(edit_history[steps])
+        st.download_button(
+            label="Click to Download Video",
+            data=video_to_download.getvalue(),
+            file_name="Edited_video.mp4",
+            mime="video/mp4",
+    )
 

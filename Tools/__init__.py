@@ -1,11 +1,11 @@
-import cv2
+# import cv2
 import numpy as np
 import streamlit as st
-from io import BytesIO
-from .Change_speed import *
-from .Undo_edit import *
-from .Cut_video import *
-from .Export import *
-from .Rotate_video import *
-from .load_video import *
-from .get_info_video import *
+from moviepy.editor import VideoFileClip
+from .Change_speed import change_speed
+from .Cut_video import cut_video
+from .Rotate_video import rotate_video
+from .load_video import load_video
+from .get_info_video import get_info_video
+from .Merge_video import merge_video
+from .Download_video import download_video
