@@ -1,5 +1,4 @@
 # import cv2
-import numpy as np
 import streamlit as st
 from moviepy.editor import VideoFileClip
 from .Change_speed import change_speed

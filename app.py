@@ -18,7 +18,7 @@ if video_file is not None:
         new_Video = change_speed(st.session_state.edit_history[st.session_state.steps], speed)
         st.session_state.steps += 1
         st.session_state.edit_history.append(new_Video)
-        st.success("Video speed has been changed successfully!")    
+        # st.success("Video speed has been changed successfully!")    
     button_speed_025 = col1.button("0.25x", on_click=lambda: change_video_speed(0.25))
     button_speed_05 = col2.button("0.5x", on_click=lambda: change_video_speed(0.5))
     button_speed_075 = col3.button("0.75x", on_click=lambda: change_video_speed(0.75))
@@ -34,7 +34,7 @@ if video_file is not None:
         new_Video = rotate_video(st.session_state.edit_history[st.session_state.steps], angle)
         st.session_state.steps += 1
         st.session_state.edit_history.append(new_Video)
-        st.success("Video rotation has been successfully!")
+        # st.success("Video rotation has been successfully!")
     
     button_rotate_45 = rotate1.button("45°", on_click=lambda: Rotate_video(45))
     button_rotate_90 = rotate2.button("90°", on_click=lambda: Rotate_video(90))
@@ -52,7 +52,7 @@ if video_file is not None:
         new_Video = cut_video(st.session_state.edit_history[st.session_state.steps], start_time, end_time)
         st.session_state.steps += 1
         st.session_state.edit_history.append(new_Video)
-        st.success("Video cut success")
+        # st.success("Video cut success")
     button_cut = st.button("Cut", on_click=func_cut)
 
     st.header("Video Merge")
@@ -66,7 +66,7 @@ if video_file is not None:
             new_Video = merge_video(st.session_state.edit_history[st.session_state.steps], video_new_merge)
             st.session_state.steps += 1
             st.session_state.edit_history.append(new_Video)
-            st.success("Merge video successfully")
+            # st.success("Merge video successfully")
         button_merge_video = st.button("Merge video", on_click= Merge_Video)
 
 
