@@ -1,4 +1,4 @@
-import cv2
+# import cv2
 from moviepy.editor import VideoFileClip
 def rotate_video(Video, angle):
     '''
